@@ -32,8 +32,8 @@ class DioHelper {
   }) async {
     dio.options.headers = {
       'Authorization': 'Bearer $token',
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     };
     return await dio.post(path, data: data);
   }
@@ -60,8 +60,8 @@ class DioHelper {
   }) async {
     dio.options.headers = {
       'Authorization': 'Bearer $token',
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     };
     return await dio.put(
       path,

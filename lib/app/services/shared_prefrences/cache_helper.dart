@@ -19,6 +19,11 @@ class CacheHelper {
       return await sharedPreferences.setString(key.name, value);
     } else if (value is bool) {
       return await sharedPreferences.setBool(key.name, value);
+    } else if (value is Map) {
+      // return await sharedPreferences.setStringList(
+      //   key.name,
+      //   value as List,
+      // );
     }
   }
 
@@ -39,4 +44,5 @@ enum SharedKey {
   Language,
   isDark,
   token,
+  cartList,
 }

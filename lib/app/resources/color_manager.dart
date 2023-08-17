@@ -9,4 +9,5 @@ class ColorManager {
   static const Color lightGreen = Color(0xffc3d970);
   static const Color grey = Color(0xffcccccc);
   static const Color greyWithOpacity = Color(0xfff2f2f2);
+  static const Color error = Color(0xffFF0000);
 }

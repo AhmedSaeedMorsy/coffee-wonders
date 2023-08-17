@@ -1,18 +1,18 @@
 import 'package:coffee_wonders/app/resources/assets_manager.dart';
 import 'package:coffee_wonders/app/services/shared_prefrences/cache_helper.dart';
 import 'package:coffee_wonders/presentation/cart/controller/states.dart';
+import 'package:coffee_wonders/presentation/confirmation/view/confirmation_screen.dart';
+import 'package:coffee_wonders/presentation/layout/controller/bloc.dart';
+import 'package:coffee_wonders/presentation/layout/controller/states.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../app/common/widget.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/font_manager.dart';
-import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
-import '../../product_details/view/product_details_screen.dart';
 import '../controller/bloc.dart';
 
 class CartScreen extends StatelessWidget {
@@ -35,59 +35,74 @@ class CartScreen extends StatelessWidget {
             ),
             child: BlocBuilder<CartBloc, CartStates>(
               builder: (context, state) {
-                return Column(
-                  children: [
-                    Expanded(
-                      child: ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) => cartItem(
-                          context: context,
+                return BlocBuilder<LayoutBloc, LayoutStates>(
+                    builder: (context, state) {
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: LayoutBloc.get(context).cart.isNotEmpty
+                            ? ListView.separated(
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) => cartItem(
+                                  model: LayoutBloc.get(context).cart[index],
+                                  context: context,
+                                ),
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: MediaQuery.of(context).size.height /
+                                      AppSize.s60,
+                                ),
+                                itemCount: LayoutBloc.get(context).cart.length,
+                              )
+                            : Center(
+                                child: Text(
+                                  AppStrings.notFound.tr(),
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                              ),
+                      ),
+                      SizedBox(
+                        height:
+                            MediaQuery.of(context).size.height / AppSize.s60,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal:
+                              MediaQuery.of(context).size.width / AppSize.s50,
                         ),
-                        separatorBuilder: (context, index) => SizedBox(
-                          height:
-                              MediaQuery.of(context).size.height / AppSize.s60,
+                        child: Row(
+                          children: [
+                            Text(
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              AppStrings.totalPrice.tr(),
+                            ),
+                            const Spacer(),
+                            Text(
+                              "${CartBloc.get(context).totalPrice(cart: LayoutBloc.get(context).cart)}",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
                         ),
-                        itemCount: 10,
                       ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / AppSize.s60,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal:
-                            MediaQuery.of(context).size.width / AppSize.s50,
+                      SizedBox(
+                        height:
+                            MediaQuery.of(context).size.height / AppSize.s60,
                       ),
-                      child: Row(
-                        children: [
-                          Text(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            AppStrings.totalPrice.tr(),
-                          ),
-                          const Spacer(),
-                          Text(
-                            "${CartBloc.get(context).totalPrice()}",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
+                      SharedWidget.defaultButton(
+                        label: AppStrings.goToCheckout.tr(),
+                        context: context,
+                        width: double.infinity,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ConfirmationScreen(),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / AppSize.s60,
-                    ),
-                    SharedWidget.defaultButton(
-                      label: AppStrings.goToCheckout.tr(),
-                      context: context,
-                      width: double.infinity,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          Routes.checkoutRoute,
-                        );
-                      },
-                    ),
-                  ],
-                );
+                    ],
+                  );
+                });
               },
             )),
       ),
@@ -96,146 +111,156 @@ class CartScreen extends StatelessWidget {
 
   Widget cartItem({
     required BuildContext context,
+    required Map model,
   }) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailsScreen(),
-          ),
-        );
-      },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Container(
-              height: AppSize.s130.h,
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage(
-                    AssetsManager.productDemo,
-                  ),
-                ),
-                color: ColorManager.primaryColor,
-                borderRadius: BorderRadius.circular(
-                  AppSize.s8.w,
-                ),
-                border: Border.all(
-                  color: CacheHelper.getData(key: SharedKey.isDark) == true
-                      ? ColorManager.white
-                      : ColorManager.primaryColor,
-                ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Container(
+            height: AppSize.s130.h,
+            decoration: BoxDecoration(
+              image: model["image"].toString().isNotEmpty
+                  ? DecorationImage(
+                      image: NetworkImage(
+                        model["image"],
+                      ),
+                      fit: BoxFit.fill,
+                    )
+                  : const DecorationImage(
+                      image: AssetImage(
+                        AssetsManager.noImage,
+                      ),
+                      fit: BoxFit.fill,
+                    ),
+              color: ColorManager.primaryColor,
+              borderRadius: BorderRadius.circular(
+                AppSize.s8.w,
               ),
-            ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / AppSize.s50,
-          ),
-          Expanded(
-            flex: 3,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Lacimbali M200",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / AppSize.s60,
-                ),
-                Text(
-                  "200.00",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / AppSize.s60,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            AppSize.s8,
-                          ),
-                          color: ColorManager.mintGreen,
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal:
-                              MediaQuery.of(context).size.width / AppSize.s40,
-                        ),
-                        child: Text(
-                          "+",
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontSize: FontSizeManager.s16.sp,
-                                    color: ColorManager.white,
-                                  ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal:
-                              MediaQuery.of(context).size.width / AppSize.s50),
-                      child: Text(
-                        "1",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            AppSize.s8,
-                          ),
-                          color: ColorManager.mintGreen,
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal:
-                              MediaQuery.of(context).size.width / AppSize.s40,
-                        ),
-                        child: Text(
-                          "-",
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontSize: FontSizeManager.s16.sp,
-                                    color: ColorManager.white,
-                                  ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          Align(
-            alignment: AlignmentDirectional.topStart,
-            child: IconButton(
-              icon: Icon(
-                Icons.close,
+              border: Border.all(
                 color: CacheHelper.getData(key: SharedKey.isDark) == true
                     ? ColorManager.white
-                    : ColorManager.black,
+                    : ColorManager.primaryColor,
               ),
-              onPressed: () {},
             ),
-          )
-        ],
-      ),
+          ),
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width / AppSize.s50,
+        ),
+        Expanded(
+          flex: 3,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                model["title"],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / AppSize.s60,
+              ),
+              Text(
+                "${model["price"]}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / AppSize.s60,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      LayoutBloc.get(context).upDateDataBase(
+                          id: model["id"],
+                          quantity: CartBloc.get(context)
+                              .incrementProductCounter(
+                                  quantity: model["quantity"]));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          AppSize.s8,
+                        ),
+                        color: ColorManager.mintGreen,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.width / AppSize.s40,
+                      ),
+                      child: Text(
+                        "+",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: FontSizeManager.s16.sp,
+                              color: ColorManager.white,
+                            ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.width / AppSize.s50),
+                    child: Text(
+                      "${model["quantity"]}",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      LayoutBloc.get(context).upDateDataBase(
+                          id: model["id"],
+                          quantity: CartBloc.get(context)
+                              .decrementProductCounter(
+                                  quantity: model["quantity"]));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          AppSize.s8,
+                        ),
+                        color: ColorManager.mintGreen,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.width / AppSize.s40,
+                      ),
+                      child: Text(
+                        "-",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: FontSizeManager.s16.sp,
+                              color: ColorManager.white,
+                            ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        Align(
+          alignment: AlignmentDirectional.topStart,
+          child: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: CacheHelper.getData(key: SharedKey.isDark) == true
+                  ? ColorManager.white
+                  : ColorManager.black,
+            ),
+            onPressed: () {
+              LayoutBloc.get(context).deleteFromDataBase(id: model["id"]);
+            },
+          ),
+        )
+      ],
     );
   }
 }

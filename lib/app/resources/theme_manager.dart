@@ -9,7 +9,6 @@ import 'values_manager.dart';
 ThemeData getAppLightTheme() {
   return ThemeData(
     primaryColor: ColorManager.primaryColor,
-    //text theme
     scaffoldBackgroundColor: ColorManager.white,
     appBarTheme: AppBarTheme(
       backgroundColor: ColorManager.white,
@@ -101,7 +100,6 @@ ThemeData getAppLightTheme() {
 ThemeData getAppDarkTheme() {
   return ThemeData(
     primaryColor: ColorManager.white,
-    //text theme
     scaffoldBackgroundColor: ColorManager.black,
     appBarTheme: AppBarTheme(
       backgroundColor: ColorManager.black,

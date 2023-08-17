@@ -32,7 +32,7 @@ class AppStrings {
   static String price = "price";
   static String productDetails = "productDetails";
   static String addToCart = "addToCart";
-  static String similarProducts = "similarProducts";
+  static String otherProducts = "otherProducts";
   static String profileSettings = "profileSettings";
   static String edit = "edit";
   static String fullName = "fullName";
@@ -42,4 +42,16 @@ class AppStrings {
   static String login = "login";
   static String createAnAccount = "createAnAccount";
   static String createAccount = "createAccount";
+  static String available = "available";
+  static String successAddedToCart = "successAddedToCart";
+  static String thisIsRequired = "thisIsRequired";
+  static String country = "country";
+  static String city = "city";
+  static String state = "state";
+  static String building = "building";
+  static String apartment = "apartment";
+  static String postalCode = "postalCode";
+  static String area = "area";
+  static String countryAndStateValidate = "countryAndStateValidate";
+  static String success = "success";
 }

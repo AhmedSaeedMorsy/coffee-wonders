@@ -1,6 +1,6 @@
 {
     "notFound": "لا يوجد",
-    "searchHint": "البحث عن المنتجات",
+    "searchHint": "البحث عن العلامات التجارية",
     "specialOffer": "العروض الخاصة",
     "clickOnProducts": "انقر على المنتج للحصول على مزيد من التفاصيل حوله",
     "brands": "العلامات التجارية",
@@ -31,7 +31,7 @@
     "price": "السعر",
     "productDetails": "تفاصيل المنتج",
     "addToCart": "اضافة الي السلة",
-    "similarProducts": "منتجات مشابهة",
+    "otherProducts": "منتجات اخري",
     "profileSettings": "إعدادات الملف الشخصي",
     "edit": "تعديل",
     "fullName": "الاسم بالكامل",
@@ -40,5 +40,16 @@
     "defaultCreditCard": "بطاقة الائتمان الافتراضية",
     "login": "تسجيل الدخول",
     "createAnAccount": "انشاء حساب؟",
-    "createAccount": "انشاء حساب"
+    "createAccount": "انشاء حساب",
+    "available": "المتاح : ",
+    "successAddedToCart": "تمت اضافته الي السلة",
+    "thisIsRequired": "مطلوب !",
+    "country": "الدولة",
+    "city": "المدينة",
+    "state": "المنطقة",
+    "building": "المبني",
+    "apartment": "الشقة",
+    "postalCode": "الرقم البريدي",
+    "countryAndStateValidate": "الدولة والمنطقة مطلوبين",
+    "success": "Success !"
 }

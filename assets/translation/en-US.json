@@ -1,6 +1,6 @@
 {
       "notFound": "Not Found",
-      "searchHint": "Search For Products",
+      "searchHint": "Search For Brands",
       "specialOffer": "Special Offer",
       "clickOnProducts": "Click on the product to get more details about it",
       "brands": "Brands",
@@ -31,7 +31,7 @@
       "price": "Price",
       "productDetails": "Product details",
       "addToCart": "Add to cart",
-      "similarProducts": "Similar products",
+      "otherProducts": "Other products",
       "profileSettings": "Profile settings",
       "edit": "Edit",
       "fullName": "Full Name",
@@ -40,5 +40,16 @@
       "defaultCreditCard": "Default credit card",
       "login": "Login",
       "createAnAccount": "Create an account?",
-      "createAccount": "Create account"
+      "createAccount": "Create account",
+      "available": "Available : ",
+      "successAddedToCart": "Success! Added to cart",
+      "thisIsRequired": "This is Required",
+      "country": "Country",
+      "city": "City",
+      "state": "State",
+      "building": "Building",
+      "apartment": "Apartment",
+      "postalCode": "Postal Code",
+      "countryAndStateValidate": "Country and State is Required",
+      "success": "تمت العملية بنجاح"
 }

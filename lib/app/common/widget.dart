@@ -1,11 +1,13 @@
 import 'package:coffee_wonders/app/resources/assets_manager.dart';
+import 'package:coffee_wonders/presentation/layout/controller/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../model/product_model.dart';
 import '../../presentation/product_details/view/product_details_screen.dart';
 import '../resources/color_manager.dart';
 import '../resources/font_manager.dart';
 import '../resources/values_manager.dart';
-import '../services/shared_prefrences/cache_helper.dart';
 
 class SharedWidget {
   static Widget defaultButton({
@@ -74,13 +76,21 @@ class SharedWidget {
 
   static Widget productItem({
     required BuildContext context,
+    required ProductDataModel model,
   }) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailsScreen(),
+            builder: (context) => ProductDetailsScreen(
+              price: model.salePrice,
+              id: model.id,
+              name: model.name,
+              image: model.image,
+              quantity: model.quantity,
+              categoryName: model.categoryName,
+            ),
           ),
         );
       },
@@ -94,17 +104,19 @@ class SharedWidget {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 decoration: BoxDecoration(
                   color: ColorManager.primaryColor,
-                  image: const DecorationImage(
-                    image: AssetImage(
-                      AssetsManager.productDemo,
-                    ),
-                    fit: BoxFit.fill,
-                  ),
-                  border: Border.all(
-                    color: CacheHelper.getData(key: SharedKey.isDark) == true
-                        ? ColorManager.white
-                        : ColorManager.primaryColor,
-                  ),
+                  image: model.image.isNotEmpty
+                      ? DecorationImage(
+                          image: NetworkImage(
+                            model.image,
+                          ),
+                          fit: BoxFit.fill,
+                        )
+                      : const DecorationImage(
+                          image: AssetImage(
+                            AssetsManager.noImage,
+                          ),
+                          fit: BoxFit.fill,
+                        ),
                 ),
                 height: AppSize.s150.w,
                 width: AppSize.s200.w,
@@ -117,34 +129,19 @@ class SharedWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Lacimbali M200",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .copyWith(
-                                    color: ColorManager.green,
-                                    fontSize: FontSizeManager.s18.sp),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.favorite_border_outlined,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      model.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: ColorManager.green,
+                          fontSize: FontSizeManager.s18.sp),
                     ),
                     Row(
                       children: [
                         Expanded(
                           child: Text(
-                            "200.00",
+                            "${model.salePrice}",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
@@ -157,7 +154,15 @@ class SharedWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            LayoutBloc.get(context).insertDataBase(
+                              id: model.id,
+                              title: model.name,
+                              image: model.image,
+                              price: model.salePrice,
+                              quantity: 1,categoryName: model.categoryName
+                            );
+                          },
                           icon: const Icon(
                             Icons.shopping_cart_outlined,
                           ),
@@ -174,14 +179,14 @@ class SharedWidget {
     );
   }
 
-  // static toast({required String message, required Color backgroundColor}) {
-  //   return Fluttertoast.showToast(
-  //     msg: message,
-  //     toastLength: Toast.LENGTH_SHORT,
-  //     gravity: ToastGravity.BOTTOM,
-  //     backgroundColor: backgroundColor,
-  //     textColor: ColorManager.white,
-  //     fontSize: FontSizeManager.s14.sp,
-  //   );
-  // }
+  static toast({required String message, required Color backgroundColor}) {
+    return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: backgroundColor,
+      textColor: ColorManager.white,
+      fontSize: FontSizeManager.s14.sp,
+    );
+  }
 }

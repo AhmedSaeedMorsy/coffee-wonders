@@ -1,276 +1,377 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coffee_wonders/app/resources/assets_manager.dart';
 import 'package:coffee_wonders/app/resources/strings_manager.dart';
 import 'package:coffee_wonders/app/services/shared_prefrences/cache_helper.dart';
+import 'package:coffee_wonders/presentation/home/controller/bloc.dart';
+import 'package:coffee_wonders/presentation/layout/controller/bloc.dart';
+import 'package:coffee_wonders/presentation/layout/controller/states.dart';
+import 'package:coffee_wonders/presentation/product_details/controller/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../app/common/widget.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/font_manager.dart';
 import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/values_manager.dart';
+import '../../home/controller/states.dart';
+import '../controller/states.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
+  late String name;
+  late double price;
+  late String image;
+  late double quantity;
+  late String categoryName;
+  late int id;
+
   ProductDetailsScreen({
     super.key,
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.image,
+    required this.quantity,
+    required this.categoryName,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          AppStrings.productDetails.tr(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => HomeBloc()..getProduct(),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                Routes.cartRoute,
-              );
-            },
-            icon: const Icon(
-              Icons.shopping_cart_outlined,
-            ),
+        BlocProvider(
+            create: (context) =>
+                ProductDetailsBloc()..getProductDetials(id: id))
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            AppStrings.productDetails.tr(),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height / AppSize.s80,
-            ),
-            sliderBanner(),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / AppSize.s50,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / AppSize.s30,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Lacimbali M200",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            Text(
-                              "Category Name",
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            Text(
-                              "Brand Name",
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          "200.00",
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / AppSize.s40,
-                  ),
-                  Text(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: ColorManager.mintGreen,
-                          fontSize: FontSizeManager.s18.sp,
-                        ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / AppSize.s50,
-                  ),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Icon(
-                          Icons.favorite_border_outlined,
-                          color:
-                              CacheHelper.getData(key: SharedKey.isDark) == true
-                                  ? ColorManager.white
-                                  : ColorManager.primaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / AppSize.s40,
-                      ),
-                      Expanded(
-                        child: SharedWidget.defaultButton(
-                          label: AppStrings.addToCart.tr(),
-                          context: context,
-                          width: double.infinity,
-                          onPressed: () {},
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / AppSize.s30,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              AppSize.s8,
-                            ),
-                            color: ColorManager.mintGreen,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width / AppSize.s40,
-                          ),
-                          child: Text(
-                            "+",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  fontSize: FontSizeManager.s16.sp,
-                                  color: ColorManager.white,
-                                ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width /
-                                AppSize.s50),
-                        child: Text(
-                          "1",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              AppSize.s8,
-                            ),
-                            color: ColorManager.mintGreen,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width / AppSize.s40,
-                          ),
-                          child: Text(
-                            "-",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  fontSize: FontSizeManager.s16.sp,
-                                  color: ColorManager.white,
-                                ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / AppSize.s40,
-                  ),
-                  Text(
-                    AppStrings.similarProducts.tr(),
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / AppSize.s60,
-                  ),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: 9,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return SharedWidget.productItem(
-                        context: context,
-                      );
-                    },
-                    semanticChildCount: 2,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: AppSize.s6.w,
-                      crossAxisSpacing: AppSize.s6.h,
-                      childAspectRatio: 1 / 1.6,
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / AppSize.s50,
-                  ),
-                ],
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.cartRoute,
+                );
+              },
+              icon: const Icon(
+                Icons.shopping_cart_outlined,
               ),
             ),
           ],
+        ),
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              BlocBuilder<ProductDetailsBloc, ProductDetailsStates>(
+                  builder: (context, state) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s80,
+                    ),
+                    sliderBanner(
+                      context: context,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s50,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.width / AppSize.s30,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      name,
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
+                                    ),
+                                    Text(
+                                      categoryName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          AppStrings.available.tr(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
+                                        Text(
+                                          "${quantity.toInt()}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "$price",
+                                  maxLines: 1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height /
+                                AppSize.s40,
+                          ),
+                          Text(
+                            ProductDetailsBloc.get(context)
+                                    .productDetailsModel
+                                    .data
+                                    .description ??
+                                "",
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: ColorManager.mintGreen,
+                                      fontSize: FontSizeManager.s18.sp,
+                                    ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height /
+                                AppSize.s50,
+                          ),
+                          BlocBuilder<LayoutBloc, LayoutStates>(
+                              builder: (context, state) {
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: SharedWidget.defaultButton(
+                                    label: AppStrings.addToCart.tr(),
+                                    context: context,
+                                    width: double.infinity,
+                                    onPressed: () {
+                                      LayoutBloc.get(context).insertDataBase(
+                                          id: id,
+                                          title: name,
+                                          image: image,
+                                          price: price,
+                                          quantity:
+                                              ProductDetailsBloc.get(context)
+                                                  .counter,
+                                          categoryName: categoryName);
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width /
+                                      AppSize.s30,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    LayoutBloc.get(context).upDateDataBase(
+                                        id: id,
+                                        quantity:
+                                            ProductDetailsBloc.get(context)
+                                                .incrementProductCounter());
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                        AppSize.s8,
+                                      ),
+                                      color: ColorManager.mintGreen,
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width /
+                                              AppSize.s40,
+                                    ),
+                                    child: Text(
+                                      "+",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            fontSize: FontSizeManager.s16.sp,
+                                            color: ColorManager.white,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width /
+                                              AppSize.s50),
+                                  child: Text(
+                                    "${ProductDetailsBloc.get(context).counter}",
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    LayoutBloc.get(context).upDateDataBase(
+                                        id: id,
+                                        quantity:
+                                            ProductDetailsBloc.get(context)
+                                                .decrementProductCounter());
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                        AppSize.s8,
+                                      ),
+                                      color: ColorManager.mintGreen,
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width /
+                                              AppSize.s40,
+                                    ),
+                                    child: Text(
+                                      "-",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            fontSize: FontSizeManager.s16.sp,
+                                            color: ColorManager.white,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height /
+                                AppSize.s40,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
+              BlocBuilder<HomeBloc, HomeStates>(
+                builder: (context, state) {
+                  return HomeBloc.get(context).productModel.data.isEmpty
+                      ? SizedBox(
+                          height: AppSize.s150.h,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: ColorManager.green,
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: MediaQuery.of(context).size.width /
+                                  AppSize.s30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppStrings.otherProducts.tr(),
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height /
+                                    AppSize.s60,
+                              ),
+                              GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: HomeBloc.get(context)
+                                    .productModel
+                                    .data
+                                    .length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return SharedWidget.productItem(
+                                    context: context,
+                                    model: HomeBloc.get(context)
+                                        .productModel
+                                        .data[index],
+                                  );
+                                },
+                                semanticChildCount: 2,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: AppSize.s6.w,
+                                  crossAxisSpacing: AppSize.s6.h,
+                                  childAspectRatio: 1 / 1.6,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                },
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / AppSize.s50,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  List<String> banners = ["", ""];
-  Widget sliderBanner() => CarouselSlider(
-        carouselController: CarouselController(),
-        items: banners
-            .map(
-              (e) => Container(
-                decoration: BoxDecoration(
-                  color: ColorManager.primaryColor,
-                  image: const DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(
-                      AssetsManager.productDemo,
-                    ),
-                  ),
-                  borderRadius: BorderRadius.circular(
-                    AppSize.s10,
-                  ),
-                  border: Border.all(
-                    color: CacheHelper.getData(key: SharedKey.isDark) == true
-                        ? ColorManager.white
-                        : ColorManager.primaryColor,
-                  ),
-                ),
-              ),
-            )
-            .toList(),
-        options: CarouselOptions(
+  Widget sliderBanner({
+    required BuildContext context,
+  }) =>
+      Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / AppSize.s30,
+        ),
+        child: Container(
           height: AppSize.s200.h,
-          viewportFraction: .8,
-          initialPage: 0,
-          enableInfiniteScroll: true,
-          reverse: false,
-          autoPlay: true,
-          autoPlayInterval: const Duration(
-            seconds: AppIntDuration.duration3,
+          decoration: BoxDecoration(
+            color: ColorManager.primaryColor,
+            image: image.isNotEmpty
+                ? DecorationImage(
+                    image: NetworkImage(
+                      image,
+                    ),
+                    fit: BoxFit.fill,
+                  )
+                : const DecorationImage(
+                    image: AssetImage(
+                      AssetsManager.noImage,
+                    ),
+                    fit: BoxFit.fill,
+                  ),
+            borderRadius: BorderRadius.circular(
+              AppSize.s10,
+            ),
+            border: Border.all(
+              color: CacheHelper.getData(key: SharedKey.isDark) == true
+                  ? ColorManager.white
+                  : ColorManager.primaryColor,
+            ),
           ),
-          autoPlayAnimationDuration: const Duration(
-            milliseconds: AppIntDuration.duration500,
-          ),
-          autoPlayCurve: Curves.fastOutSlowIn,
-          enlargeCenterPage: true,
-          scrollDirection: Axis.horizontal,
         ),
       );
 }

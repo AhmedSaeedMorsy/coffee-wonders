@@ -1,60 +1,59 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:coffee_wonders/app/resources/assets_manager.dart';
 import 'package:coffee_wonders/app/resources/color_manager.dart';
 import 'package:coffee_wonders/app/resources/values_manager.dart';
 import 'package:coffee_wonders/app/services/shared_prefrences/cache_helper.dart';
+import 'package:coffee_wonders/presentation/home/controller/bloc.dart';
 import 'package:coffee_wonders/presentation/products/view/products_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../layout/controller/bloc.dart';
 
 class BrandsScreen extends StatelessWidget {
-  BrandsScreen({super.key});
-  List<String> image = [
-    AssetsManager.brand1,
-    AssetsManager.brand2,
-    AssetsManager.brand3,
-    AssetsManager.brand4,
-    AssetsManager.brand5,
-    AssetsManager.brand6,
-    AssetsManager.brand7,
-    AssetsManager.brand8,
-  ];
-  List<String> brandName = [
-    "Franke",
-    "Frucosol",
-    "La marzocco",
-    "Migel",
-    "Kalerm",
-    "Lacimbali",
-    "Johny",
-    "Mahlkonig"
-  ];
+  const BrandsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      physics: const BouncingScrollPhysics(),
-      itemBuilder: (context, index) => brandItem(
-        context: context,
-        image: image[index],
-        label: brandName[index],
-      ),
-      separatorBuilder: (context, index) => SizedBox(
-        height: MediaQuery.of(context).size.height / AppSize.s40,
-      ),
-      itemCount: image.length,
-    );
+    return LayoutBloc.get(context).categoriesModel.data.isEmpty
+        ? const Center(
+            child: CircularProgressIndicator(
+              color: ColorManager.green,
+            ),
+          )
+        : ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) => brandItem(
+              context: context,
+              label: LayoutBloc.get(context).categories[index].name,
+              id: LayoutBloc.get(context).categories[index].id,
+            ),
+            separatorBuilder: (context, index) => SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s40,
+            ),
+            itemCount: LayoutBloc.get(context).categories.length,
+          );
   }
 
   Widget brandItem({
     required BuildContext context,
-    required String image,
     required String label,
+    required int id,
   }) {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ProductsScreen()));
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductsScreen(
+              productsList: LayoutBloc.get(context).chooseCategory(
+                id: id,
+              ),
+              branName: LayoutBloc.get(context).categoriesLabel(
+                id: id,
+              ),
+            ),
+          ),
+        );
       },
       child: Row(
         children: [
@@ -62,20 +61,24 @@ class BrandsScreen extends StatelessWidget {
             height: AppSize.s150.h,
             width: AppSize.s150.h,
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  image,
-                ),
-              ),
               borderRadius: BorderRadius.circular(
                 AppSize.s6,
+              ),
+              image: DecorationImage(
+                image: AssetImage(
+                  HomeBloc.get(context).categoriesIamge(
+                    id: id,
+                  ),
+                ),
               ),
               border: Border.all(
                 color: CacheHelper.getData(key: SharedKey.isDark) == true
                     ? ColorManager.white
                     : ColorManager.primaryColor,
               ),
-              color: ColorManager.primaryColor,
+              color: CacheHelper.getData(key: SharedKey.isDark) == true
+                  ? ColorManager.primaryColor
+                  : ColorManager.white,
             ),
           ),
           SizedBox(
@@ -83,7 +86,9 @@ class BrandsScreen extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              label,
+              LayoutBloc.get(context).categoriesLabel(
+                id: id,
+              ),
               style: Theme.of(context).textTheme.bodyLarge,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
