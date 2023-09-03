@@ -39,8 +39,6 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) {
         return BlocProvider(
           create: (context) => LayoutBloc()
-            ..getProducts()
-            ..getCategories()
             ..createDataBase(),
           child: BlocListener<LayoutBloc, LayoutStates>(
             listener: (context, state) {

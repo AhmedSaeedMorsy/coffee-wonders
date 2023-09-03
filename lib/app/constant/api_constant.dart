@@ -10,4 +10,5 @@ class ApiConstant {
   static const String countryPath = "/api/country";
   static String statePath({required int id}) => "/api/state/country/$id";
   static const String checkoutPath ="/api/sale/order";
+  static String productsByCategoryId({required int id})=>"/api/all/category/products/$id";
 }

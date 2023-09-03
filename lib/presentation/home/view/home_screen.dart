@@ -180,9 +180,7 @@ class HomeScreen extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ProductsScreen(
-              productsList: LayoutBloc.get(context).chooseCategory(
-                id: id,
-              ),
+              id: id,
               branName: LayoutBloc.get(context).categoriesLabel(
                 id: id,
               ),

@@ -6,6 +6,8 @@ import 'package:coffee_wonders/model/login_model.dart';
 import 'package:coffee_wonders/presentation/splash_screen/controller/states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../app/services/shared_prefrences/cache_helper.dart';
+
 class SplashBloc extends Cubit<SplashStates> {
   SplashBloc() : super(SplashInitState());
   static SplashBloc get(context) => BlocProvider.of(context);
@@ -20,6 +22,10 @@ class SplashBloc extends Cubit<SplashStates> {
       },
     ).then((value) {
       loginModel = LoginModel.fromJson(value.data);
+      CacheHelper.setData(
+            key: SharedKey.token,
+            value: loginModel.result.data.token,
+          );
       emit(
         LoginApiSucessState(),
       );

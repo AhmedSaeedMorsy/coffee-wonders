@@ -1,4 +1,3 @@
-import 'package:coffee_wonders/app/services/shared_prefrences/cache_helper.dart';
 import 'package:coffee_wonders/presentation/splash_screen/controller/bloc.dart';
 import 'package:coffee_wonders/presentation/splash_screen/controller/states.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +18,6 @@ class SplashScreen extends StatelessWidget {
       create: (context) => SplashBloc()..loginToApi(),
       child: BlocConsumer<SplashBloc, SplashStates>(listener: (context, state) {
         if (state is LoginApiSucessState) {
-          CacheHelper.setData(
-            key: SharedKey.token,
-            value: SplashBloc.get(context).loginModel.result.data.token,
-          );
           Navigator.pushReplacementNamed(
             context,
             Routes.layoutRoute,

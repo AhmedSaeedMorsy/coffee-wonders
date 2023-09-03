@@ -20,63 +20,65 @@ class LayoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LayoutBloc, LayoutStates>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(LayoutBloc.get(context)
-                .appBarTitle[LayoutBloc.get(context).index]),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    Routes.cartRoute,
-                  );
-                },
-                icon: const Icon(
-                  Icons.shopping_cart_outlined,
-                ),
-              ),
-            ],
-          ),
-          drawer: drawerItem(
-            context: context,
-          ),
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / AppSize.s30,
-            ),
-            child: LayoutBloc.get(context).lacimbali.isNotEmpty
-                ? LayoutBloc.get(context).screens[LayoutBloc.get(context).index]
-                : const Center(
-                    child: CircularProgressIndicator(
-                      color: ColorManager.green,
-                    ),
+    return BlocProvider(create: (context)=>LayoutBloc()..getCategories(),
+      child: BlocBuilder<LayoutBloc, LayoutStates>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(LayoutBloc.get(context)
+                  .appBarTitle[LayoutBloc.get(context).index]),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.cartRoute,
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.shopping_cart_outlined,
                   ),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
                 ),
-                label: "Home",
+              ],
+            ),
+            drawer: drawerItem(
+              context: context,
+            ),
+            body: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / AppSize.s30,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.category_outlined,
+              child: LayoutBloc.get(context).categories.isNotEmpty
+                  ? LayoutBloc.get(context).screens[LayoutBloc.get(context).index]
+                  : const Center(
+                      child: CircularProgressIndicator(
+                        color: ColorManager.green,
+                      ),
+                    ),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                  ),
+                  label: "Home",
                 ),
-                label: "Category",
-              ),
-            ],
-            currentIndex: LayoutBloc.get(context).index,
-            onTap: (index) {
-              LayoutBloc.get(context).changeBottomNavBar(index);
-            },
-          ),
-        );
-      },
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.category_outlined,
+                  ),
+                  label: "Category",
+                ),
+              ],
+              currentIndex: LayoutBloc.get(context).index,
+              onTap: (index) {
+                LayoutBloc.get(context).changeBottomNavBar(index);
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 
