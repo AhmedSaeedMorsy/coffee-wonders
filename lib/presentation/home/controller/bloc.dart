@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:coffee_wonders/app/constant/api_constant.dart';
 import 'package:coffee_wonders/app/services/dio_helper/dio_helper.dart';
@@ -16,7 +15,6 @@ class HomeBloc extends Cubit<HomeStates> {
     AssetsManager.banner2,
     AssetsManager.banner3,
   ];
-
 
   String categoriesIamge({required int id}) {
     switch (id) {
@@ -41,44 +39,29 @@ class HomeBloc extends Cubit<HomeStates> {
     }
   }
 
-
   ProductModel productModel = ProductModel();
-  List<String> pages = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-    "16",
-    "17",
-    "18",
-    "19",
-    "20"
-  ];
-  final random = Random();
-
+  List<ProductDataModel> products = [];
   void getProduct() {
     emit(ProductsLoadingState());
     DioHelper.getData(
       path: ApiConstant.productPath,
-      queryParameters: {
-        "page": pages[random.nextInt(pages.length)],
-      },
       token: CacheHelper.getData(
         key: SharedKey.token,
       ),
     ).then((value) {
       productModel = ProductModel.fromJson(value.data);
+      for (var item in productModel.data) {
+        if (item.categoryId == 7568 ||
+            item.categoryId == 7544 ||
+            item.categoryId == 7537 ||
+            item.categoryId == 7536 ||
+            item.categoryId == 7552 ||
+            item.categoryId == 7586 ||
+            item.categoryId == 7583 ||
+            item.categoryId == 7562) {
+          products.add(item);
+        }
+      }
       emit(ProductsSuccessState());
     }).catchError((error) {
       emit(ProductsErrorState());

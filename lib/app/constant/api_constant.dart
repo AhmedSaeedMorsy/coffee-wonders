@@ -2,7 +2,7 @@ class ApiConstant {
   static const String baseUrl = "https://coffee-wonders-test.odoo.com";
   static const String loginPath = "/api/authenticate";
   static const String categoriesPath = "/api/category";
-  static const String productPath = "/api/product";
+  static const String productPath = "/api/all/products";
   static String productDetialsPath({
     required int id,
   }) =>

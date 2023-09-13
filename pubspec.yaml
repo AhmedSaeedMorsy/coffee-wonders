@@ -1,5 +1,5 @@
 name: coffee_wonders
-description: A new Flutter project.
+description: Discover the world's best coffee machines with coffee wonders  company and enjoy a perfect cup of coffee every time 15 years of experience We are proud to say that during the experience of coffee wonders We have had the privilege of collaborating with more than 1,350 customers across the Kingdom of Saudi Arabia, including many international brands and restaurants It is a testament to our commitment to quality and excellence that these companies have chosen to cooperate with us
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.5.0
 
 environment:
   sdk: '>=2.19.6 <3.0.0'

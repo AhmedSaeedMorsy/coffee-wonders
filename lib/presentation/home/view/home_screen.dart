@@ -84,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       height: MediaQuery.of(context).size.height / AppSize.s60,
                     ),
-                    HomeBloc.get(context).productModel.data.isEmpty
+                    HomeBloc.get(context).products.isEmpty
                         ? SizedBox(
                             height: AppSize.s150.h,
                             child: const Center(
@@ -96,14 +96,13 @@ class HomeScreen extends StatelessWidget {
                         : GridView.builder(
                             shrinkWrap: true,
                             itemCount:
-                                HomeBloc.get(context).productModel.data.length,
+                              12,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return SharedWidget.productItem(
                                 context: context,
                                 model: HomeBloc.get(context)
-                                    .productModel
-                                    .data[index],
+                                    .products[index],
                               );
                             },
                             semanticChildCount: 2,

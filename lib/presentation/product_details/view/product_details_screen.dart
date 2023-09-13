@@ -276,7 +276,7 @@ class ProductDetailsScreen extends StatelessWidget {
               }),
               BlocBuilder<HomeBloc, HomeStates>(
                 builder: (context, state) {
-                  return HomeBloc.get(context).productModel.data.isEmpty
+                  return HomeBloc.get(context).products.isEmpty
                       ? SizedBox(
                           height: AppSize.s150.h,
                           child: const Center(
@@ -302,20 +302,16 @@ class ProductDetailsScreen extends StatelessWidget {
                               ),
                               GridView.builder(
                                 shrinkWrap: true,
-                                itemCount: HomeBloc.get(context)
-                                    .productModel
-                                    .data
-                                    .length,
+                                itemCount: 12,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return SharedWidget.productItem(
                                     context: context,
                                     model: HomeBloc.get(context)
-                                        .productModel
-                                        .data[index],
+                                        .products[index],
                                   );
                                 },
-                                semanticChildCount: 2,
+                                semanticChildCount: 2,  
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
