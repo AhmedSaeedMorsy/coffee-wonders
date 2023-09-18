@@ -20,6 +20,8 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LayoutBloc.get(context)
+        .getDataFromDataBase(LayoutBloc.get(context).database);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -30,10 +32,6 @@ class CartScreen extends StatelessWidget {
         providers: [
           BlocProvider(
             create: (context) => CartBloc(),
-          ),
-          BlocProvider(
-            create: (context) => LayoutBloc()
-              ..getDataFromDataBase(LayoutBloc.get(context).database),
           ),
         ],
         child: Padding(
