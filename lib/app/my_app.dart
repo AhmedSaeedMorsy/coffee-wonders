@@ -38,8 +38,7 @@ class _MyAppState extends State<MyApp> {
       splitScreenMode: true,
       builder: (context, child) {
         return BlocProvider(
-          create: (context) => LayoutBloc()
-            ..createDataBase(),
+          create: (context) => LayoutBloc()..createDataBase(),
           child: BlocListener<LayoutBloc, LayoutStates>(
             listener: (context, state) {
               if (state is InsertIntoDataBaseState) {

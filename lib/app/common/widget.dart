@@ -160,7 +160,8 @@ class SharedWidget {
                               title: model.name,
                               image: model.image,
                               price: model.salePrice,
-                              quantity: 1,categoryName: model.categoryName
+                              quantity: 1,
+                              categoryName: model.categoryName,
                             );
                           },
                           icon: const Icon(

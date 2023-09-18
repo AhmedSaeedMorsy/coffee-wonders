@@ -2,11 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
-import '../../../app/constant/api_constant.dart';
 import '../../../app/resources/strings_manager.dart';
-import '../../../app/services/dio_helper/dio_helper.dart';
-import '../../../app/services/shared_prefrences/cache_helper.dart';
-import '../../../model/category_model.dart';
 import '../../../model/product_model.dart';
 import '../../brands/view/brands_screen.dart';
 import '../../home/view/home_screen.dart';
@@ -32,61 +28,7 @@ class LayoutBloc extends Cubit<LayoutStates> {
   ProductModel productModel = ProductModel();
   List<ProductDataModel> productsList = [];
 
-  List<DataCategoriesModel> categories = [];
-
-  CategoriesModel categoriesModel = CategoriesModel();
-  void getCategories() {
-    emit(CategoriesLoadingState());
-    DioHelper.getData(
-      path: ApiConstant.categoriesPath,
-      token: CacheHelper.getData(
-        key: SharedKey.token,
-      ),
-    ).then((value) {
-      categories = [];
-      categoriesModel = CategoriesModel.fromJson(value.data);
-      for (var item in categoriesModel.data) {
-        if (item.id == 7568 ||
-            item.id == 7544 ||
-            item.id == 7537 ||
-            item.id == 7536 ||
-            item.id == 7552 ||
-            item.id == 7586 ||
-            item.id == 7583 ||
-            item.id == 7562) {
-          categories.add(item);
-        }
-      }
-      emit(CategoriesSuccessState());
-    }).catchError((error) {
-      emit(CategoriesErrorState());
-    });
-  }
-
-  String categoriesLabel({required int id}) {
-    switch (id) {
-      case 7568:
-        return "Lacimbali";
-      case 7544:
-        return "Franke";
-      case 7537:
-        return "La marzocco";
-      case 7536:
-        return "Johny";
-      case 7552:
-        return "Migel";
-      case 7586:
-        return "Kalerm";
-      case 7583:
-        return "Frucosol";
-      case 7562:
-        return "Mahlkonig";
-      default:
-        return "";
-    }
-  }
-
-
+// Database
   late Database database;
   List<Map> cart = [];
 

@@ -7,7 +7,6 @@ import 'package:coffee_wonders/app/resources/strings_manager.dart';
 import 'package:coffee_wonders/app/services/shared_prefrences/cache_helper.dart';
 import 'package:coffee_wonders/presentation/home/controller/bloc.dart';
 import 'package:coffee_wonders/presentation/home/controller/states.dart';
-import 'package:coffee_wonders/presentation/layout/controller/bloc.dart';
 import 'package:coffee_wonders/presentation/products/view/products_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +19,15 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: BlocProvider(
-        create: (context) => HomeBloc()..getProduct(),
-        child: BlocBuilder<HomeBloc, HomeStates>(
-          builder: (context, state) {
-            return Column(
+    return BlocProvider(
+      create: (context) => HomeBloc()
+        ..getProduct()
+        ..getCategories(),
+      child: BlocBuilder<HomeBloc, HomeStates>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
               children: [
                 sliderBanner(banners: HomeBloc.get(context).banners),
                 SizedBox(
@@ -53,20 +54,29 @@ class HomeScreen extends StatelessWidget {
                 ),
                 SizedBox(
                   height: AppSize.s150.h,
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => brandItem(
-                      label: LayoutBloc.get(context).categories[index].name,
-                      context: context,
-                      id: LayoutBloc.get(context).categories[index].id,
-                    ),
-                    separatorBuilder: (context, index) => SizedBox(
-                      width: MediaQuery.of(context).size.width / AppSize.s40,
-                    ),
-                    itemCount: LayoutBloc.get(context).categories.length,
-                  ),
+                  child: HomeBloc.get(context).categories.isNotEmpty
+                      ? ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => brandItem(
+                            label: HomeBloc.get(context).categories[index].name,
+                            context: context,
+                            id: HomeBloc.get(context).categories[index].id,
+                            branName: HomeBloc.get(context).categoriesLabel(
+                              id: HomeBloc.get(context).categories[index].id,
+                            ),
+                          ),
+                          separatorBuilder: (context, index) => SizedBox(
+                            width:
+                                MediaQuery.of(context).size.width / AppSize.s40,
+                          ),
+                          itemCount: HomeBloc.get(context).categories.length,
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(
+                              color: ColorManager.green),
+                        ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / AppSize.s40,
@@ -95,14 +105,12 @@ class HomeScreen extends StatelessWidget {
                           )
                         : GridView.builder(
                             shrinkWrap: true,
-                            itemCount:
-                              12,
+                            itemCount: 12,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return SharedWidget.productItem(
                                 context: context,
-                                model: HomeBloc.get(context)
-                                    .products[index],
+                                model: HomeBloc.get(context).products[index],
                               );
                             },
                             semanticChildCount: 2,
@@ -117,9 +125,9 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ],
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -172,22 +180,18 @@ class HomeScreen extends StatelessWidget {
     required BuildContext context,
     required String label,
     required int id,
+    required String branName,
   }) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductsScreen(
-              id: id,
-              branName: LayoutBloc.get(context).categoriesLabel(
-                id: id,
-              ),
-            ),
+            builder: (context) => ProductsScreen(id: id, branName: branName),
           ),
         );
       },
-      child: LayoutBloc.get(context).categoriesModel.data.isEmpty
+      child: HomeBloc.get(context).categoriesModel.data.isEmpty
           ? const SizedBox.shrink()
           : SizedBox(
               width: AppSize.s100.h,
@@ -220,7 +224,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    LayoutBloc.get(context).categoriesLabel(
+                    HomeBloc.get(context).categoriesLabel(
                       id: id,
                     ),
                     maxLines: 1,

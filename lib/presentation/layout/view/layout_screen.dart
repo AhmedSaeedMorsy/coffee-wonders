@@ -1,5 +1,8 @@
 // ignore_for_file: library_prefixes
 
+import 'package:coffee_wonders/presentation/home/controller/bloc.dart';
+import 'package:coffee_wonders/presentation/home/controller/states.dart';
+import 'package:coffee_wonders/presentation/layout/controller/states.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,73 +16,71 @@ import '../../../app/resources/values_manager.dart';
 
 import '../../../app/services/shared_prefrences/cache_helper.dart';
 import '../controller/bloc.dart';
-import '../controller/states.dart';
 
 class LayoutScreen extends StatelessWidget {
   const LayoutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (context)=>LayoutBloc()..getCategories(),
-      child: BlocBuilder<LayoutBloc, LayoutStates>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(LayoutBloc.get(context)
-                  .appBarTitle[LayoutBloc.get(context).index]),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      Routes.cartRoute,
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.shopping_cart_outlined,
-                  ),
-                ),
-              ],
-            ),
-            drawer: drawerItem(
-              context: context,
-            ),
-            body: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / AppSize.s30,
-              ),
-              child: LayoutBloc.get(context).categories.isNotEmpty
-                  ? LayoutBloc.get(context).screens[LayoutBloc.get(context).index]
-                  : const Center(
-                      child: CircularProgressIndicator(
-                        color: ColorManager.green,
+    return BlocProvider(
+        create: (context) => HomeBloc()..getCategories(),
+        child: BlocBuilder<LayoutBloc, LayoutStates>(
+          builder: (context, state) {
+            return BlocBuilder<HomeBloc, HomeStates>(
+              builder: (context, state) {
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text(LayoutBloc.get(context)
+                        .appBarTitle[LayoutBloc.get(context).index]),
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            Routes.cartRoute,
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.shopping_cart_outlined,
+                        ),
                       ),
-                    ),
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.home,
+                    ],
                   ),
-                  label: "Home",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.category_outlined,
+                  drawer: drawerItem(
+                    context: context,
                   ),
-                  label: "Category",
-                ),
-              ],
-              currentIndex: LayoutBloc.get(context).index,
-              onTap: (index) {
-                LayoutBloc.get(context).changeBottomNavBar(index);
+                  body: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.width / AppSize.s30,
+                      ),
+                      child: LayoutBloc.get(context)
+                          .screens[LayoutBloc.get(context).index]),
+                  bottomNavigationBar: BottomNavigationBar(
+                    items: const [
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.home,
+                        ),
+                        label: "Home",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.category_outlined,
+                        ),
+                        label: "Category",
+                      ),
+                    ],
+                    currentIndex: LayoutBloc.get(context).index,
+                    onTap: (index) {
+                      LayoutBloc.get(context).changeBottomNavBar(index);
+                    },
+                  ),
+                );
               },
-            ),
-          );
-        },
-      ),
-    );
+            );
+          },
+        ));
   }
 
   Widget drawerItem({
