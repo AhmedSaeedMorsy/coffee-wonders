@@ -1,6 +1,7 @@
 import 'package:coffee_wonders/presentation/cart/controller/states.dart';
 import 'package:coffee_wonders/presentation/checkout/controller/bloc.dart';
 import 'package:coffee_wonders/presentation/checkout/controller/states.dart';
+import 'package:coffee_wonders/presentation/layout/controller/states.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,7 +56,13 @@ class CheckoutScreen extends StatelessWidget {
           BlocProvider(
             create: (context) =>
                 CheckoutBloc()..productsInCart(LayoutBloc.get(context).cart),
-          )
+          ),
+          BlocProvider(
+            create: (context) => LayoutBloc()
+              ..getDataFromDataBase(
+                LayoutBloc.get(context).database,
+              ),
+          ),
         ],
         child: BlocConsumer<CheckoutBloc, CheckoutStates>(
           listener: (context, state) {
@@ -207,19 +214,21 @@ class CheckoutScreen extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / AppSize.s50,
                   ),
-                  Expanded(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) => cartItem(
-                        context: context,
-                        model: LayoutBloc.get(context).cart[index],
-                      ),
-                      separatorBuilder: (context, index) => SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s60,
-                      ),
-                      itemCount: LayoutBloc.get(context).cart.length,
-                    ),
-                  ),
+                  Expanded(child: BlocBuilder<LayoutBloc, LayoutStates>(
+                    builder: (context, state) {
+                      return ListView.separated(
+                        itemBuilder: (context, index) => cartItem(
+                          context: context,
+                          model: LayoutBloc.get(context).cart[index],
+                        ),
+                        separatorBuilder: (context, index) => SizedBox(
+                          height:
+                              MediaQuery.of(context).size.height / AppSize.s60,
+                        ),
+                        itemCount: LayoutBloc.get(context).cart.length,
+                      );
+                    },
+                  )),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / AppSize.s50,
                   ),

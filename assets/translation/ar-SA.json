@@ -51,5 +51,7 @@
     "apartment": "الشقة",
     "postalCode": "الرقم البريدي",
     "countryAndStateValidate": "الدولة والمنطقة مطلوبين",
-    "success": "Success !"
+    "success": "تمت العملية بنجاح",
+    "notFoundProducts": "لا يوجد منتجات",
+    "area": "المحافظة"
 }

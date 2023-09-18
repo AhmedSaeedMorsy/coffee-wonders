@@ -26,8 +26,16 @@ class CartScreen extends StatelessWidget {
           AppStrings.myCart.tr(),
         ),
       ),
-      body: BlocProvider(
-        create: (context) => CartBloc(),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => CartBloc(),
+          ),
+          BlocProvider(
+            create: (context) => LayoutBloc()
+              ..getDataFromDataBase(LayoutBloc.get(context).database),
+          ),
+        ],
         child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width / AppSize.s50,
@@ -55,7 +63,7 @@ class CartScreen extends StatelessWidget {
                               )
                             : Center(
                                 child: Text(
-                                  AppStrings.notFound.tr(),
+                                  AppStrings.notFoundProducts.tr(),
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),

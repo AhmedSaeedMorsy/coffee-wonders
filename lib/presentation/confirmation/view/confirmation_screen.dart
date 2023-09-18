@@ -192,10 +192,10 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                               context: context,
                               width: double.infinity,
                               onPressed: () {
-                                int countryId =
-                                    ConfirmationBloc.get(context).countryId!;
-                                int stateId =
-                                    ConfirmationBloc.get(context).stateId!;
+                                int? countryId =
+                                    ConfirmationBloc.get(context).countryId;
+                                int? stateId =
+                                    ConfirmationBloc.get(context).stateId;
                                 if (formKey.currentState!.validate() &&
                                     ConfirmationBloc.get(context).countryId !=
                                         null &&
@@ -209,12 +209,12 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                                         area: areaController.text,
                                         building: buildingController.text,
                                         city: cityController.text,
-                                        countryId: countryId,
+                                        countryId: countryId!,
                                         email: emailController.text,
                                         fullName: fullNameController.text,
                                         phone: phoneNumberController.text,
                                         postalCode: postalCodeController.text,
-                                        stateId: stateId,
+                                        stateId: stateId!,
                                       ),
                                     ),
                                   );
@@ -233,7 +233,11 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                             ),
                           ],
                         )
-                      : const SizedBox(),
+                      : const Center(
+                          child: CircularProgressIndicator(
+                            color: ColorManager.green,
+                          ),
+                        ),
                 ),
               ),
             ),

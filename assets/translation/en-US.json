@@ -51,5 +51,7 @@
       "apartment": "Apartment",
       "postalCode": "Postal Code",
       "countryAndStateValidate": "Country and State is Required",
-      "success": "تمت العملية بنجاح"
+     "success": "Success !",
+      "notFoundProducts": "Not found products",
+      "area": "Area"
 }
