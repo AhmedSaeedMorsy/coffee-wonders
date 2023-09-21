@@ -1,3 +1,4 @@
+import 'package:coffee_wonders/presentation/about_us/view/abou_us_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../presentation/cart/view/cart_screen.dart';
@@ -10,6 +11,7 @@ class Routes {
   static const String layoutRoute = "/layoutRoute";
   static const String checkoutRoute = "/checkoutRoute";
   static const String cartRoute = "/cartRoute";
+  static const String aboutUsRoute = "/aboutUsRoute";
 }
 
 class RouteGenerator {
@@ -27,6 +29,11 @@ class RouteGenerator {
       case Routes.cartRoute:
         return MaterialPageRoute(
           builder: (_) => const CartScreen(),
+        );
+
+      case Routes.aboutUsRoute:
+        return MaterialPageRoute(
+          builder: (_) => const AboutUSScreen(),
         );
       default:
         return unDefiendRoute();

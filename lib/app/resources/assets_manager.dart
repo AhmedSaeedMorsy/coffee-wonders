@@ -21,4 +21,14 @@ class AssetsManager {
   static const String migel = "$imagePath/migel.png";
   static const String arrowUp = "$imagePath/arrow_up.png";
   static const String arrowDown = "$imagePath/arrow_down.png";
+  static const String anfim = "$imagePath/anfim.png";
+  static const String animo = "$imagePath/animo.png";
+  static const String bonomi = "$imagePath/bonomi.png";
+  static const String chino = "$imagePath/chino.png";
+  static const String coffeePlanet = "$imagePath/coffee_planet.png";
+  static const String eureka = "$imagePath/eureka.png";
+  static const String lelit = "$imagePath/lelit.png";
+  static const String nuovaSimonelli = "$imagePath/nuova_simonelli.png";
+  static const String trucillo = "$imagePath/trucillo.png";
+  static const String vitaminBar = "$imagePath/vitamin_bar.png";
 }

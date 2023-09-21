@@ -21,6 +21,7 @@ class ProductDetailsBloc extends Cubit<ProductDetailsStates> {
           key: SharedKey.token,
         )).then((value) {
       productDetailsModel = ProductDetailsModel.fromJson(value.data);
+
       emit(ProductDetailsSuccessState());
     }).catchError((error) {
       emit(ProductDetailsErrorState());

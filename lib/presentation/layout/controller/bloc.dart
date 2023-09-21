@@ -13,7 +13,7 @@ class LayoutBloc extends Cubit<LayoutStates> {
   static LayoutBloc get(context) => BlocProvider.of(context);
   int index = 0;
   List<String> appBarTitle = [
-    AppStrings.appName,
+    AppStrings.appName.tr(),
     AppStrings.brands.tr(),
   ];
   List<Widget> screens = [
@@ -25,7 +25,6 @@ class LayoutBloc extends Cubit<LayoutStates> {
     emit(ChangeBottomNavigationBarState());
   }
 
-  ProductModel productModel = ProductModel();
   List<ProductDataModel> productsList = [];
 
 // Database

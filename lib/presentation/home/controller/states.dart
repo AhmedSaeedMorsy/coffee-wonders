@@ -13,3 +13,5 @@ class ProductsLoadingState extends HomeStates {}
 class ProductsSuccessState extends HomeStates {}
 
 class ProductsErrorState extends HomeStates {}
+
+class SearchForProductsState extends HomeStates {}

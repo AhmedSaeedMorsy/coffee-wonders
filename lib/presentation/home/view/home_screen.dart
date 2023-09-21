@@ -8,10 +8,13 @@ import 'package:coffee_wonders/app/services/shared_prefrences/cache_helper.dart'
 import 'package:coffee_wonders/presentation/home/controller/bloc.dart';
 import 'package:coffee_wonders/presentation/home/controller/states.dart';
 import 'package:coffee_wonders/presentation/products/view/products_screen.dart';
+import 'package:coffee_wonders/presentation/search/view/search_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../app/resources/font_manager.dart';
+import '../../../app/resources/styles_manager.dart';
 import '../../../app/resources/values_manager.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -29,6 +32,58 @@ class HomeScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
+                HomeBloc.get(context).products.isNotEmpty
+                    ? InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (__) => SearchScreen(
+                                products: HomeBloc.get(context).products,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width / AppSize.s20,
+                            vertical: MediaQuery.of(context).size.height /
+                                AppSize.s50,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              AppSize.s4,
+                            ),
+                            border: Border.all(
+                              color: ColorManager.grey,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.search,
+                                color: ColorManager.primaryColor,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width /
+                                    AppSize.s20,
+                              ),
+                              Text(
+                                AppStrings.searchHint.tr(),
+                                style: getMediumStyle(
+                                  fontSize: FontSizeManager.s16.sp,
+                                  color: ColorManager.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / AppSize.s50,
+                ),
                 sliderBanner(banners: HomeBloc.get(context).banners),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / AppSize.s30,
@@ -119,7 +174,7 @@ class HomeScreen extends StatelessWidget {
                               crossAxisCount: 2,
                               mainAxisSpacing: AppSize.s10.w,
                               crossAxisSpacing: AppSize.s5.h,
-                              childAspectRatio: 1 / 1.6,
+                              childAspectRatio: AppSize.s10.w / AppSize.s18.h,
                             ),
                           ),
                   ],

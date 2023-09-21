@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, dead_code
 
 import 'package:coffee_wonders/app/resources/assets_manager.dart';
 import 'package:coffee_wonders/app/resources/strings_manager.dart';
@@ -92,51 +92,89 @@ class ProductDetailsScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(
+                            name,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                           Row(
                             children: [
                               Expanded(
-                                flex: 3,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      name,
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                    ),
-                                    Text(
-                                      categoryName,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          AppStrings.available.tr(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                        ),
-                                        Text(
-                                          "${quantity.toInt()}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                child: Text(
+                                  AppStrings.price.tr(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                        color: ColorManager.green,
+                                      ),
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
                                 child: Text(
                                   "$price",
                                   maxLines: 1,
-                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                        color: ColorManager.green,
+                                      ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
+                              ),
+                            ],
+                          ),
+                          ProductDetailsBloc.get(context)
+                                      .productDetailsModel
+                                      .data
+                                      .priceWithTax !=
+                                  null
+                              ? Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        AppStrings.priceWithTax.tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                              color: ColorManager.green,
+                                            ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        ProductDetailsBloc.get(context)
+                                            .productDetailsModel
+                                            .data
+                                            .priceWithTax
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                              color: ColorManager.green,
+                                            ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(),
+                          Text(
+                            categoryName,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                AppStrings.available.tr(),
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              Text(
+                                "${quantity.toInt()}",
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
@@ -146,10 +184,22 @@ class ProductDetailsScreen extends StatelessWidget {
                           ),
                           Text(
                             ProductDetailsBloc.get(context)
-                                    .productDetailsModel
-                                    .data
-                                    .description ??
-                                "",
+                                        .productDetailsModel
+                                        .data
+                                        .description ==
+                                    false
+                                ? ""
+                                : ProductDetailsBloc.get(context)
+                                            .productDetailsModel
+                                            .data
+                                            .description !=
+                                        null
+                                    ? ProductDetailsBloc.get(context)
+                                        .productDetailsModel
+                                        .data
+                                        .description
+                                        .toString()
+                                    : "",
                             style:
                                 Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: ColorManager.mintGreen,
@@ -160,110 +210,129 @@ class ProductDetailsScreen extends StatelessWidget {
                             height: MediaQuery.of(context).size.height /
                                 AppSize.s50,
                           ),
-                          BlocBuilder<LayoutBloc, LayoutStates>(
-                              builder: (context, state) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  child: SharedWidget.defaultButton(
-                                    label: AppStrings.addToCart.tr(),
-                                    context: context,
-                                    width: double.infinity,
-                                    onPressed: () {
-                                      LayoutBloc.get(context).insertDataBase(
-                                          id: id,
-                                          title: name,
-                                          image: image,
-                                          price: price,
-                                          quantity:
-                                              ProductDetailsBloc.get(context)
+                          ProductDetailsBloc.get(context)
+                                      .productDetailsModel
+                                      .data
+                                      .priceWithTax !=
+                                  null
+                              ? BlocBuilder<LayoutBloc, LayoutStates>(
+                                  builder: (context, state) {
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        child: SharedWidget.defaultButton(
+                                          label: AppStrings.addToCart.tr(),
+                                          context: context,
+                                          width: double.infinity,
+                                          onPressed: () {
+                                            LayoutBloc.get(context)
+                                                .insertDataBase(
+                                              id: id,
+                                              title: name,
+                                              image: image,
+                                              price: ProductDetailsBloc.get(
+                                                      context)
+                                                  .productDetailsModel
+                                                  .data
+                                                  .priceWithTax!,
+                                              quantity: ProductDetailsBloc.get(
+                                                      context)
                                                   .counter,
-                                          categoryName: categoryName);
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width /
-                                      AppSize.s30,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    LayoutBloc.get(context).upDateDataBase(
-                                        id: id,
-                                        quantity:
-                                            ProductDetailsBloc.get(context)
-                                                .incrementProductCounter());
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                        AppSize.s8,
+                                              categoryName: categoryName,
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      color: ColorManager.mintGreen,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          MediaQuery.of(context).size.width /
-                                              AppSize.s40,
-                                    ),
-                                    child: Text(
-                                      "+",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                            fontSize: FontSizeManager.s16.sp,
-                                            color: ColorManager.white,
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          MediaQuery.of(context).size.width /
-                                              AppSize.s50),
-                                  child: Text(
-                                    "${ProductDetailsBloc.get(context).counter}",
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    LayoutBloc.get(context).upDateDataBase(
-                                        id: id,
-                                        quantity:
-                                            ProductDetailsBloc.get(context)
-                                                .decrementProductCounter());
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                        AppSize.s8,
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                AppSize.s30,
                                       ),
-                                      color: ColorManager.mintGreen,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          MediaQuery.of(context).size.width /
-                                              AppSize.s40,
-                                    ),
-                                    child: Text(
-                                      "-",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                            fontSize: FontSizeManager.s16.sp,
-                                            color: ColorManager.white,
+                                      InkWell(
+                                        onTap: () {
+                                          LayoutBloc.get(context).upDateDataBase(
+                                              id: id,
+                                              quantity: ProductDetailsBloc.get(
+                                                      context)
+                                                  .incrementProductCounter());
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              AppSize.s8,
+                                            ),
+                                            color: ColorManager.mintGreen,
                                           ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                AppSize.s40,
+                                          ),
+                                          child: Text(
+                                            "+",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                  fontSize:
+                                                      FontSizeManager.s16.sp,
+                                                  color: ColorManager.white,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                AppSize.s50),
+                                        child: Text(
+                                          "${ProductDetailsBloc.get(context).counter}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          LayoutBloc.get(context).upDateDataBase(
+                                              id: id,
+                                              quantity: ProductDetailsBloc.get(
+                                                      context)
+                                                  .decrementProductCounter());
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              AppSize.s8,
+                                            ),
+                                            color: ColorManager.mintGreen,
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                AppSize.s40,
+                                          ),
+                                          child: Text(
+                                            "-",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                  fontSize:
+                                                      FontSizeManager.s16.sp,
+                                                  color: ColorManager.white,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                })
+                              : const SizedBox(),
                           SizedBox(
                             height: MediaQuery.of(context).size.height /
                                 AppSize.s40,
@@ -307,17 +376,18 @@ class ProductDetailsScreen extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   return SharedWidget.productItem(
                                     context: context,
-                                    model: HomeBloc.get(context)
-                                        .products[index],
+                                    model:
+                                        HomeBloc.get(context).products[index],
                                   );
                                 },
-                                semanticChildCount: 2,  
+                                semanticChildCount: 2,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   mainAxisSpacing: AppSize.s6.w,
                                   crossAxisSpacing: AppSize.s6.h,
-                                  childAspectRatio: 1 / 1.6,
+                                  childAspectRatio:
+                                      AppSize.s10.w / AppSize.s18.h,
                                 ),
                               ),
                             ],

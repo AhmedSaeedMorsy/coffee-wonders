@@ -1,7 +1,7 @@
 class AppStrings {
   static String notFound = "notFound";
   static String notFoundProducts = "notFoundProducts";
-  static String appName = "Coffee Wonders";
+  static String appName = "appName";
   static String searchHint = "searchHint";
   static String specialOffer = "specialOffer";
   static String clickOnProducts = "clickOnProducts";
@@ -55,4 +55,37 @@ class AppStrings {
   static String area = "area";
   static String countryAndStateValidate = "countryAndStateValidate";
   static String success = "success";
+  static String priceWithTax = "priceWithTax";
+  static String priceWithoutTax = "priceWithoutTax";
+  static String aboutUs = "aboutUs";
+  static String theStoryBehind = "theStoryBehind";
+  static String discoverTheWorldOfCoffeeWonder =
+      "discoverTheWorldOfCoffeeWonder";
+  static String coffeeWonderIsALeadingBrand = "coffeeWonderIsALeadingBrand";
+  static String vision = "vision";
+  static String ourVision = "ourVision";
+  static String mission = "mission";
+  static String ourMission = "ourMission";
+  static String ourMainGoal = "ourMainGoal";
+  static String exploreCoffeeWonder = "exploreCoffeeWonder";
+  static String coffeeWonderTakesPrideInItsExtensiveSelection =
+      "coffeeWonderTakesPrideInItsExtensiveSelection";
+  static String findYourPerfectBrewCompanion = "findYourPerfectBrewCompanion";
+  static String coffeeWonderOffersADiverseRange =
+      "coffeeWonderOffersADiverseRange";
+  static String craftedForExcellence = "craftedForExcellence";
+  static String atCoffeeWonderQuality = "atCoffeeWonderQuality";
+  static String customerSatisfaction = "customerSatisfaction";
+  static String coffeeWonderPlacesGreatImportance =
+      "coffeeWonderPlacesGreatImportance";
+  static String whyCoffeeWonders = "whyCoffeeWonders";
+  static String wideRangeOfCoffeeMachines = "wideRangeOfCoffeeMachines";
+  static String expertGuidance = "expertGuidance";
+  static String superiorQualityAndDurability = "superiorQualityAndDurability";
+  static String exceptionalCustomerService = "exceptionalCustomerService";
+  static String branches = "branches";
+  static String jeddah = "jeddah";
+  static String riyadah = "riyadah";
+  static String madinah = "madinah";
+  static String khamisMashet = "khamisMashet";
 }

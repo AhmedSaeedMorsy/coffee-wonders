@@ -114,6 +114,21 @@ class LayoutScreen extends StatelessWidget {
               drawerListItem(
                 context: context,
                 onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(
+                    context,
+                    Routes.aboutUsRoute,
+                  );
+                },
+                icon: Icons.info_outline,
+                text: AppStrings.aboutUs.tr(),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / AppSize.s40,
+              ),
+              drawerListItem(
+                context: context,
+                onTap: () {
                   SharedFunction.changeLanguage(context);
                 },
                 icon: Icons.language_outlined,
