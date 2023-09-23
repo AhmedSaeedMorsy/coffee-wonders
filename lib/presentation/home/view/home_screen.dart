@@ -63,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               const Icon(
                                 Icons.search,
-                                color: ColorManager.primaryColor,
+                                color: ColorManager.grey,
                               ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width /

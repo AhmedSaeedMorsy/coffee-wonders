@@ -7,7 +7,7 @@ class AssetsManager {
   static const String specialOffer = "$imagePath/special_offer.png";
   static const String shopBag = "$imagePath/shop_bag.png";
   static const String logoWhite = "$imagePath/logo_white.png";
-  static const String noImage = "$imagePath/no_image.jpg";
+  static const String noImage = "$imagePath/no_image.png";
   static const String banner1 = "$imagePath/banner1.png";
   static const String banner2 = "$imagePath/banner2.png";
   static const String banner3 = "$imagePath/banner3.png";

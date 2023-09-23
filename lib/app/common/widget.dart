@@ -104,7 +104,7 @@ class SharedWidget {
               Container(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 decoration: BoxDecoration(
-                  color: ColorManager.primaryColor,
+                  color: ColorManager.white,
                   image: model.image.isNotEmpty
                       ? DecorationImage(
                           image: NetworkImage(
@@ -151,6 +151,7 @@ class SharedWidget {
                       AppStrings.priceWithoutTax.tr(),
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontSize: FontSizeManager.s14.sp,
+                            color: ColorManager.primaryColor,
                           ),
                     ),
                   ],

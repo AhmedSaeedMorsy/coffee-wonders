@@ -140,7 +140,7 @@ class CartScreen extends StatelessWidget {
                       ),
                       fit: BoxFit.fill,
                     ),
-              color: ColorManager.primaryColor,
+              color: ColorManager.white,
               borderRadius: BorderRadius.circular(
                 AppSize.s8.w,
               ),

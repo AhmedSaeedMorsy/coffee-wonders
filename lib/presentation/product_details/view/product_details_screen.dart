@@ -415,19 +415,19 @@ class ProductDetailsScreen extends StatelessWidget {
         child: Container(
           height: AppSize.s200.h,
           decoration: BoxDecoration(
-            color: ColorManager.primaryColor,
+            color: ColorManager.white,
             image: image.isNotEmpty
                 ? DecorationImage(
                     image: NetworkImage(
                       image,
                     ),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.contain,
                   )
                 : const DecorationImage(
                     image: AssetImage(
                       AssetsManager.noImage,
                     ),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.contain,
                   ),
             borderRadius: BorderRadius.circular(
               AppSize.s10,

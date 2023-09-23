@@ -323,7 +323,7 @@ class CheckoutScreen extends StatelessWidget {
             child: Container(
               height: AppSize.s120.h,
               decoration: BoxDecoration(
-                color: ColorManager.primaryColor,
+                color: ColorManager.white,
                 borderRadius: BorderRadius.circular(
                   AppSize.s8.w,
                 ),

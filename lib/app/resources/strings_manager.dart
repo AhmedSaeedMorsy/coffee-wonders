@@ -1,5 +1,6 @@
 class AppStrings {
   static String notFound = "notFound";
+  static String coffeeWonders = "Coffee Wonders";
   static String notFoundProducts = "notFoundProducts";
   static String appName = "appName";
   static String searchHint = "searchHint";

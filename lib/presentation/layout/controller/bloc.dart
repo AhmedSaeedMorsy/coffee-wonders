@@ -13,7 +13,7 @@ class LayoutBloc extends Cubit<LayoutStates> {
   static LayoutBloc get(context) => BlocProvider.of(context);
   int index = 0;
   List<String> appBarTitle = [
-    AppStrings.appName.tr(),
+    AppStrings.coffeeWonders,
     AppStrings.brands.tr(),
   ];
   List<Widget> screens = [
