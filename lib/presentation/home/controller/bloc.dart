@@ -43,21 +43,11 @@ class HomeBloc extends Cubit<HomeStates> {
             item.id == 7570 ||
             item.id == 7564 ||
             item.id == 7531 ||
-            item.id == 7575 ||
             item.id == 7569 ||
-            item.id == 7593 ||
             item.id == 7577 ||
-            item.id == 7598 ||
-            item.id == 7576 ||
             item.id == 7596 ||
             item.id == 7560 ||
-            item.id == 7566 ||
-            item.id == 7590 ||
-            item.id == 7585 ||
-            item.id == 7584 ||
-            item.id == 7597 ||
-            item.id == 7565 ||
-            item.id == 7579) {
+            item.id == 7590) {
           categories.add(item);
         }
       }
@@ -73,54 +63,37 @@ class HomeBloc extends Cubit<HomeStates> {
         return "Lacimbali";
       case 7544:
         return "Franke";
-      case 7575:
-        return "Blendik";
       case 7537:
         return "La marzocco";
       case 7536:
         return "Johny";
       case 7552:
         return "Migel";
-      case 7598:
-        return "Java";
       case 7586:
         return "Kalerm";
       case 7583:
         return "Frucosol";
       case 7562:
         return "Mahlkonig";
-      case 7576:
-        return "Genie";
+
       case 7570:
         return "Anfim";
       case 7564:
         return "Animo";
-      case 7566:
-        return "Kv Capsules";
+
       case 7569:
         return "Bonomi";
       case 7577:
         return "Chino";
-      case 7584:
-        return "Mizer";
       case 7560:
         return "Coffee Planet";
       case 7531:
         return "Eureka";
-      case 7565:
-        return "Nikta";
+
       case 7590:
         return "Lelit";
-      case 7597:
-        return "Nuova Simonelli";
-      case 7579:
-        return "Ningyo";
-      case 7593:
-        return "Trucillo";
       case 7596:
         return "Vitamin Bar";
-      case 7585:
-        return "Moosha";
       default:
         return "";
     }
@@ -160,8 +133,6 @@ class HomeBloc extends Cubit<HomeStates> {
         return AssetsManager.lelit;
       case 7597:
         return AssetsManager.nuovaSimonelli;
-      case 7593:
-        return AssetsManager.trucillo;
       case 7596:
         return AssetsManager.vitaminBar;
       default:
@@ -192,21 +163,11 @@ class HomeBloc extends Cubit<HomeStates> {
             item.categoryId == 7570 ||
             item.categoryId == 7564 ||
             item.categoryId == 7531 ||
-            item.categoryId == 7575 ||
             item.categoryId == 7569 ||
-            item.categoryId == 7593 ||
             item.categoryId == 7577 ||
-            item.categoryId == 7598 ||
-            item.categoryId == 7576 ||
             item.categoryId == 7596 ||
             item.categoryId == 7560 ||
-            item.categoryId == 7566 ||
-            item.categoryId == 7590 ||
-            item.categoryId == 7585 ||
-            item.categoryId == 7584 ||
-            item.categoryId == 7597 ||
-            item.categoryId == 7565 ||
-            item.categoryId == 7579) {
+            item.categoryId == 7590) {
           products.add(item);
         }
       }
