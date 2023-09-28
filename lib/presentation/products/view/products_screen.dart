@@ -63,7 +63,7 @@ class ProductsScreen extends StatelessWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: AppSize.s10.w,
                       crossAxisSpacing: AppSize.s5.h,
-                      childAspectRatio: AppSize.s10.w / AppSize.s18.h,
+                      childAspectRatio:2.0 / 3.166,
                     ),
                   )
                 : const Center(

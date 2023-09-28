@@ -124,7 +124,7 @@ class SharedWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height / AppSize.s60,
+                    vertical: MediaQuery.of(context).size.height / AppSize.s120,
                     horizontal:
                         MediaQuery.of(context).size.width / AppSize.s40),
                 child: Column(

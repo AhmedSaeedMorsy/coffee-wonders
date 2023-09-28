@@ -174,11 +174,13 @@ class LayoutScreen extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width / AppSize.s16,
           ),
-          Text(
-            text,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  fontSize: FontSizeManager.s18.sp,
-                ),
+          Expanded(
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontSize: FontSizeManager.s18.sp,
+                  ),
+            ),
           ),
         ],
       ),

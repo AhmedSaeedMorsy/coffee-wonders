@@ -386,8 +386,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                   crossAxisCount: 2,
                                   mainAxisSpacing: AppSize.s6.w,
                                   crossAxisSpacing: AppSize.s6.h,
-                                  childAspectRatio:
-                                      AppSize.s10.w / AppSize.s18.h,
+                                  childAspectRatio: 2.0 / 3.166,
                                 ),
                               ),
                             ],
